@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/22 07:32:45 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/23 04:06:24 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,13 @@ void	fdf(t_fmap *map)
 
 }
 
-int		main(void)
+int		main(int argc, char **argv)
 {
 	t_fmap	map;
-	int i;
 
-	i = 42;
-	printf("%i\n", fdf_parse("maps/42.fdf", NULL));
-	fdf_parse("maps/42.fdf", &map);
+	(void)argc;
+	map.size_x = -1;
+	printf("\n%i\n", fdf_parse(argv[1], &map));
 //	fdf(&map);
 	return (0);
 }

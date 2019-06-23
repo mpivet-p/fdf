@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/22 07:52:58 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/23 03:19:48 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,58 +27,72 @@ int		parse_fillandcheck(const int fd, char ***tab)
 	{
 		if ((tab[i] = ft_strsplit(line, ' ')) == NULL)
 			return (-1);
-		if (parse_checkline(tab[i], len) != 0)
-			return (1);
+		//if (parse_checkline(tab[i], len) != 0)
+		//	return (1);
 		i++;
 	}
 	return (ret);
 }
 
-int		parse_getmap(t_fmap *map, char ***tab)
+int **delmap(int ***map)
 {
+	int		**ptr;
+	int		i;
+
+	ptr = NULL;
+	i = 0;
+	if (map && *map)
+	{
+		ptr = *map;
+		*map = NULL;
+		while (ptr[i])
+		{
+			free(ptr[i]);
+			ptr[i] = NULL;
+			i++;
+		}
+		free(ptr);
+	}
+	return (NULL);
+}
+
+int		**gen_map(int x, int y)
+{
+	int **map;
 	int i;
-	int j;
 
 	i = 0;
-	j = 0;
-	if (!(map->map = (int**)malloc(sizeof(int*) * map->size_y)))
-		return (-1);
-	while (tab[i])
+	map = NULL;
+	if (!(map = (int**)malloc(sizeof(int*) * y)))
+		return (NULL);
+	while (i != y)
 	{
-		if (!(map->map[i] = (int*)malloc(sizeof(int) * map->size_x)))
-		{
-//			free_map(ptr, i); A CODER
-			return (-1);
-		}
-		while (tab[i][++j])
-			map->map[i][j] = atoi(tab[i][j]);
-		j = -1;
+		if (!(map[i] = (int*)malloc(sizeof(int) * x)))
+			return (delmap(&map));
+		if (i + 1 < y)
+			map[i + 1] = NULL;
 		i++;
 	}
-	return (0);
+	return (map);
 }
 
 int		fdf_parse(char *path, t_fmap *map)
 {
-	char	***tab;
-	int		fd;
-	int		ret;
-	int		size;
+	char ***temp;
 
-	size = 0;
-	ret = 0;
-	if (!map || (fd = open(path, O_RDONLY)) == -1)
-		return (-1);
-	size = how_many_lines(fd);
-	close(fd);
-	if (size < 1 || !(tab = (char***)malloc(sizeof(char**) * (size + 1))))
-		return (-1);
-	map->size_y = size;
-	if ((ret = parse_fillandcheck(fd, tab)) != 0
-			|| (ret = parse_getmap(map, tab)) != 0)
+	temp = NULL;
+	if (fdf_verify(path, map) != 0)
 	{
-		fdf_deltab(&tab);
-		return (ret);
+		ft_putstr_fd("fdf: invalid file.\n", 2);
+		return (-1);
 	}
+	if (!(temp = (char***)malloc(sizeof(char**) * (map->size_y + 1))))
+		return (-1);
+	if (!(map->map = gen_map(map->size_x, map->size_y)))
+	{
+		free(temp);
+		return (-1);
+	}
+	printf("OK\n");
 	return (0);
 }

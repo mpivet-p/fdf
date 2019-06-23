@@ -29,7 +29,6 @@ typedef struct	s_fmap
 }				t_fmap;
 
 int		fdf_parse(char *path, t_fmap *map);
-int		parse_checkline(char **tab, int prev_len);
-void	fdf_deltab(char ****tab);
+int		fdf_verify(char *path, t_fmap *map);
 
 #endif
