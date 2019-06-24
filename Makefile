@@ -6,7 +6,7 @@
 #    By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/22 02:45:47 by mpivet-p          #+#    #+#              #
-#    Updated: 2019/06/23 02:59:07 by mpivet-p         ###   ########.fr        #
+#    Updated: 2019/06/24 09:55:51 by mpivet-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC_PATH= src/
 OBJ_PATH= obj/
 
 INC_NAME= fdf.h
-SRC_NAME= main.c parsing.c parsing_verify.c
+SRC_NAME= main.c parsing.c parsing_verify.c tools.c
 OBJ_NAME= $(SRC_NAME:.c=.o)
 
 INC= -I inc/ -I libft/inc/ -I /usr/local/include
