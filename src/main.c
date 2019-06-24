@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/23 08:31:52 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/24 06:58:16 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,36 @@ t_point	fdf_point(int x, int y)
 	return (ret);
 }
 
-t_point	fdf_coords(int x, int y)
+t_point	fdf_coords(int x, int y, int z, t_fmap *map)
 {
 	t_point ret;
+	double	tmp_x;
+	double	tmp_y;
+	double	tmp_z;
 
-	ret.x = 200 + (x * 20);
-	ret.y = 200 + (y * 20);
+//INIT
+
+	tmp_x = x * map->scale;
+	tmp_y = y * map->scale;
+	tmp_z = z * map->scale;
+
+// ROTATION EN X
+
+	tmp_y = (tmp_y * cos(map->rx)) - (tmp_z * sin(map->rx));
+	tmp_z = (tmp_y * sin(map->rx)) + (tmp_z * cos(map->rx));
+
+// ROTATION EN Y
+
+	tmp_x = (tmp_x * cos(map->ry)) + (tmp_z * sin(map->ry));
+	tmp_z = (tmp_z * cos(map->ry)) - (tmp_x * sin(map->ry));
+
+// ROTATION EN Z
+
+	tmp_x = (tmp_x * cos(map->rz)) - (tmp_y * sin(map->rz));
+	tmp_y = (tmp_x * sin(map->rz)) + (tmp_y * cos(map->rz));
+
+	ret.x = tmp_x + map->x_shift;
+	ret.y = tmp_y + map->y_shift;
 	return (ret);
 }
 
@@ -77,13 +101,13 @@ void	disp_connect_points(t_fmlx *mlx, t_fmap *ptr)
 		while (j < ptr->size_x)
 		{
 			if (i + 1 < ptr->size_y)
-				fdf_draw_line(mlx, fdf_coords(j, i), fdf_coords(j, i + 1), 0xFFFFFF);
+				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j, i + 1, ptr->map[i + 1][j], ptr), 0xFFFFFF);
 			if (i + 1 < ptr->size_y && ptr->map[i][j] > 0 && ptr->map[i + 1][j] > 0)
-				fdf_draw_line(mlx, fdf_coords(j, i), fdf_coords(j, i + 1), 0x4073ed);
+				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j, i + 1, ptr->map[i + 1][j], ptr), 0x4073ed);
 			if (j + 1 < ptr->size_x)
-				fdf_draw_line(mlx, fdf_coords(j, i), fdf_coords(j + 1, i), 0xFFFFFF);
+				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j + 1, i, ptr->map[i][j + 1], ptr), 0xFFFFFF);
 			if (j + 1 < ptr->size_x && ptr->map[i][j] > 0 && ptr->map[i][j + 1] > 0)
-				fdf_draw_line(mlx, fdf_coords(j, i), fdf_coords(j + 1, i), 0x4073ed);
+				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j + 1, i, ptr->map[i][j + 1], ptr), 0x4073ed);
 			j++;
 		}
 		j = 0;
@@ -91,18 +115,95 @@ void	disp_connect_points(t_fmlx *mlx, t_fmap *ptr)
 	}
 }
 
-t_point		test_matrice(t_point point, int angle)
+void	reset_win(t_fmlx *mlx)
 {
-	(void)angle;
-	point.x = (point.x * cos(angle)) + ((-1 * sin(angle)) * point.y);
-	point.y = (point.x * sin(angle)) + (cos(angle) * point.y);
-	printf("x = %i   y = %i\n", point.x, point.y);
-	return (point);
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i < SWIN_X)
+	{
+		while (j < SWIN_Y)
+		{
+			mlx_pixel_put(mlx->mlx, mlx->win, i, j, 0x0);
+			j++;
+		}
+		j = 0;
+		i++;
+	}
 }
 
-int		deal_key(int key, void *param)
+int		deal_key(int key, t_fmlx *mlx)
 {
-	(void)param;
+	if (key == 124)
+	{
+		mlx->fmap->x_shift += 42;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 123)
+	{
+		mlx->fmap->x_shift -= 42;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 126)
+	{
+		mlx->fmap->y_shift -= 42;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 125)
+	{
+		mlx->fmap->y_shift += 42;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 91)
+	{
+		mlx->fmap->rx += (10 * 3.14 / 180);
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 84)
+	{
+		mlx->fmap->rx -= (10 * 3.14 / 180);
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 86)
+	{
+		mlx->fmap->ry += (10 * 3.14 / 180);
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 88)
+	{
+		mlx->fmap->ry += (10 * 3.14 / 180);
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 69)
+	{
+		mlx->fmap->scale += 2;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 78)
+	{
+		mlx->fmap->scale -= 2;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
+	if (key == 49)
+	{
+		mlx->fmap->rx = 0;
+		mlx->fmap->ry = 0;
+		mlx->fmap->rz = 0;
+		reset_win(mlx);
+		disp_connect_points(mlx, mlx->fmap);
+	}
 	if (key == 53)
 		exit(0);
 	return (key);
@@ -112,14 +213,18 @@ void	fdf(t_fmap *map)
 {
 	t_fmlx	ptr;
 
-	(void)map;
+	ptr.fmap = map;
+	map->scale = 15;
+	map->x_shift = 340;
+	map->y_shift = 340;
+	map->rx = 0;
+	map->ry = 0;
+	map->rz = 0;
 	if(!(ptr.mlx = mlx_init()))
 		return ;
-	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_X, "test mlx")))
+	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "test mlx")))
 		return ;
-	mlx_key_hook(ptr.win, deal_key, (void *)0);
-	fdf_draw_line(&ptr, fdf_point(42, 42), fdf_point(150, 42), 0x0000FF);
-	fdf_draw_line(&ptr, test_matrice(fdf_point(42, 100), -30), test_matrice(fdf_point(150, 100), -30), 0xFFFFFF);
+	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
 	disp_connect_points(&ptr, map);
 	mlx_loop(ptr.mlx);
 
