@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/24 10:46:05 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/25 02:50:12 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@ void	fill_pxl(char *image, int x, int y, int color)
 {
 	int i;
 
-	i = (((SIMG_X * x) + y) * 4);
-	image[i] = color;
-//		printf("x = %i   y = %i   %x\n", x, y, color);
+	i = (((SIMG_X * y) + x) * 4);
+	if (x > 0 && y > 0 && x < SIMG_X && y < SIMG_Y)
+	{
+		image[i + 2] = (color >> 16) & 0xFF;
+		image[i + 1] = (color >> 8) & 0xFF;
+		image[i + 0] = color & 0xFF;
+	}
 }
 
 void	fdf_draw_line(t_fmlx *ptr, t_point one, t_point two, int color)
@@ -38,7 +42,7 @@ void	fdf_draw_line(t_fmlx *ptr, t_point one, t_point two, int color)
 	{
 		slope = delta.y / delta.x;
 		pitch = one.y - (slope * one.x);
-		while (one.x != two.x)
+		while ((int)round(one.x) != (int)round(two.x))
 		{
 			fill_pxl(ptr->screen, (int)round(one.x), (int)lround((slope * one.x) + pitch), color);
 			one.x += s.x;
@@ -47,7 +51,7 @@ void	fdf_draw_line(t_fmlx *ptr, t_point one, t_point two, int color)
 	}
 	slope = delta.x / delta.y;
 	pitch = one.x - (slope * one.y);
-	while (one.y != two.y)
+	while ((int)round(one.y) != (int)round(two.y))
 	{
 		fill_pxl(ptr->screen, (int)lround((slope * one.y) + pitch), (int)round(one.y), color);
 		one.y += s.y;
@@ -99,11 +103,15 @@ int		deal_key(int key, t_fmlx *mlx)
 	if (key == 88)
 		mlx->fmap->ry += (10 * 3.14 / 180);
 	if (key == 86)
-		mlx->fmap->ry += (10 * 3.14 / 180);
+		mlx->fmap->ry -= (10 * 3.14 / 180);
 	if (key == 69)
 		mlx->fmap->scale += 2;
 	if (key == 78)
 		mlx->fmap->scale -= 2;
+	if (key == 75)
+		//DECREASE
+	if (key == 67)
+		//INCREASE
 	if (key == 49)
 	{
 		mlx->fmap->rx = 0;
@@ -141,9 +149,14 @@ int		main(int argc, char **argv)
 {
 	t_fmap	map;
 
-	(void)argc;
 	map.size_x = -1;
-	fdf_parse(argv[1], &map);
+	if (argc != 2)
+	{
+		ft_putstr_fd("usage : fdf file\n", 2);
+			return (1);
+	}
+	if (fdf_parse(argv[1], &map) != 0)
+		return (2);
 	fdf(&map);
 	return (0);
 }

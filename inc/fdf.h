@@ -1,9 +1,9 @@
 #ifndef FDF_H
 # define FDF_H
-# define SWIN_X 1000
-# define SWIN_Y 840
-# define SIMG_X 1000
-# define SIMG_Y 840
+# define SWIN_X 1500
+# define SWIN_Y 1200
+# define SIMG_X 1500
+# define SIMG_Y 1200
 
 # include "libft.h"
 # include "mlx.h"
@@ -35,6 +35,7 @@ typedef struct	s_fmap
 	int 	scale;
 	int		x_shift;
 	int		y_shift;
+	int		zmod;
 	double	rx;
 	double	ry;
 	double	rz;

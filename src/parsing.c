@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/24 09:23:03 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/25 02:42:20 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int		fdf_parse(char *path, t_fmap *map)
 	map->scale = 15;
 	map->x_shift = 340;
 	map->y_shift = 340;
+	map->zmod = 1;
 	map->rx = 0;
 	map->ry = 0;
 	map->rz = 0;

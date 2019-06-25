@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42->fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 04:37:29 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/24 09:58:09 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/25 02:48:12 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,6 @@ t_point	fdf_point(int x, int y, int z)
 	return (ret);
 }
 
-void	rotate_x(t_point *point, int theta)
-{
-	point->y = (point->y * cos(theta)) - (point->z * sin(theta));
-	point->z = (point->y * sin(theta)) + (point->z * cos(theta));
-}
-
-void	rotate_y(t_point *point, int theta)
-{
-	point->x = (point->x * cos(theta)) + (point->z * sin(theta));
-	point->z = (point->z * cos(theta)) - (point->x * sin(theta));
-}
-
-void	rotate_z(t_point *point, int theta)
-{
-	point->x = (point->x * cos(theta)) - (point->y * sin(theta));
-	point->y = (point->x * sin(theta)) + (point->y * cos(theta));
-}
-
 t_point	fdf_coords(int x, int y, int z, t_fmap *map)
 {
 	t_point point;
@@ -48,9 +30,14 @@ t_point	fdf_coords(int x, int y, int z, t_fmap *map)
 	point.y = y * map->scale;
 	point.z = z * map->scale;
 
-	rotate_x(&point, map->rx);
-	rotate_y(&point, map->ry);
-	rotate_z(&point, map->rz);
+	point.y = (point.y * cos(map->rx)) - (point.z * sin(map->rx));
+	point.z = (point.y * sin(map->rx)) + (point.z * cos(map->rx));
+
+	point.x = (point.x * cos(map->ry)) + (point.z * sin(map->ry));
+	point.z = (point.z * cos(map->ry)) - (point.x * sin(map->ry));
+
+	point.x = (point.x * cos(map->rz)) - (point.y * sin(map->rz));
+	point.y = (point.x * sin(map->rz)) + (point.y * cos(map->rz));
 
 	point.x += map->x_shift;
 	point.y += map->y_shift;
