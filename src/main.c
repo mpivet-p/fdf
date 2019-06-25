@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/25 02:50:12 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/25 08:41:56 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ void	fdf_draw_line(t_fmlx *ptr, t_point one, t_point two, int color)
 		one.y += s.y;
 	}
 }
+/*
+void	fdf_exit(t_fmlx *mlx)
+{
+	
+}*/
 
 void	fdf_disp(t_fmlx *mlx, t_fmap *ptr)
 {
@@ -108,16 +113,18 @@ int		deal_key(int key, t_fmlx *mlx)
 		mlx->fmap->scale += 2;
 	if (key == 78)
 		mlx->fmap->scale -= 2;
+	if (key == 116)
+		mlx->fmap->rz += (10 * 3.14 / 180);
+	if (key == 121)
+		mlx->fmap->rz -= (10 * 3.14 / 180);
 	if (key == 75)
-		//DECREASE
+		mlx->fmap->zmod -= 0.1;
 	if (key == 67)
-		//INCREASE
+		mlx->fmap->zmod += 0.1;
 	if (key == 49)
-	{
-		mlx->fmap->rx = 0;
-		mlx->fmap->ry = 0;
-		mlx->fmap->rz = 0;
-	}
+		fdf_reset(mlx->fmap);
+	if (key == 48)
+		mlx->fmap->proj ^= FDF_ISO;
 	fdf_disp(mlx, mlx->fmap);
 	if (key == 53)
 		exit(0);

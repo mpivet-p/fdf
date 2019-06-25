@@ -6,13 +6,13 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/25 02:42:20 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/25 08:11:20 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int **delmap(int ***map, int y)
+int		**delmap(int ***map, int y)
 {
 	int		**ptr;
 	int		i;
@@ -80,32 +80,13 @@ int		fill_map(char *path, t_fmap *map, char **tab)
 	return (0);
 }
 
-
-// DEBUG
-/*
-void	print_int_tab(int **map, int x, int y)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (i < y)
-	{
-		while (j < x)
-		{
-			ft_putnbr(map[i][j]);
-			ft_putchar(' ');
-			j++;
-		}
-		j = 0;
-		i++;
-		ft_putchar('\n');
-	}
-}*/
-
 int		fdf_parse(char *path, t_fmap *map)
 {
+	char *name;
+
+	name = NULL;
+	if (!path || !(path[0]))
+		return (-1);
 	if (fdf_verify(path, map) != 0)
 	{
 		ft_putstr_fd("fdf: invalid file.\n", 2);
@@ -117,12 +98,10 @@ int		fdf_parse(char *path, t_fmap *map)
 		delmap(&(map->map), map->size_y);
 		return (-1);
 	}
-	map->scale = 15;
-	map->x_shift = 340;
-	map->y_shift = 340;
-	map->zmod = 1;
-	map->rx = 0;
-	map->ry = 0;
-	map->rz = 0;
+	if ((name = (ft_strchr(path, '/') + 1)))
+		map->name = ft_strdup(name);
+	else
+		map->name = ft_strdup(name);
+	fdf_reset(map);
 	return (0);
 }

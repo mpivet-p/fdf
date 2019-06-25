@@ -4,6 +4,7 @@
 # define SWIN_Y 1200
 # define SIMG_X 1500
 # define SIMG_Y 1200
+# define FDF_ISO 1
 
 # include "libft.h"
 # include "mlx.h"
@@ -29,24 +30,26 @@ typedef struct	s_point
 
 typedef struct	s_fmap
 {
+	char	*name;
+	double	rx;
+	double	ry;
+	double	rz;
+	double	zmod;
 	int		**map;
 	int		size_y;
 	int		size_x;
 	int 	scale;
 	int		x_shift;
 	int		y_shift;
-	int		zmod;
-	double	rx;
-	double	ry;
-	double	rz;
+	int		proj;
 }				t_fmap;
 
 int		fdf_parse(char *path, t_fmap *map);
 int		fdf_verify(char *path, t_fmap *map);
-t_point	fdf_point(int x, int y, int z);
 void	rotate_x(t_point *point, int theta);
 void	rotate_y(t_point *point, int theta);
 void	rotate_z(t_point *point, int theta);
 t_point	fdf_coords(int x, int y, int z, t_fmap *map);
+void	fdf_reset(t_fmap *map);
 
 #endif
