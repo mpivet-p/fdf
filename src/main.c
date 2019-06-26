@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/25 08:41:56 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/26 07:46:35 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,15 @@ void	fdf_draw_line(t_fmlx *ptr, t_point one, t_point two, int color)
 		one.y += s.y;
 	}
 }
-/*
+
 void	fdf_exit(t_fmlx *mlx)
 {
-	
-}*/
+	delmap(&(mlx->fmap->map), mlx->fmap->size_y);
+	ft_strdel(&(mlx->fmap->name));
+	mlx_destroy_image(mlx->mlx, mlx->img);
+	mlx_destroy_window(mlx->mlx, mlx->win);
+	exit(0);
+}
 
 void	fdf_disp(t_fmlx *mlx, t_fmap *ptr)
 {
@@ -102,9 +106,9 @@ int		deal_key(int key, t_fmlx *mlx)
 	if (key == 125)
 		mlx->fmap->y_shift += 42;
 	if (key == 91)
-		mlx->fmap->rx += (10 * 3.14 / 180);
-	if (key == 84)
 		mlx->fmap->rx -= (10 * 3.14 / 180);
+	if (key == 84)
+		mlx->fmap->rx += (10 * 3.14 / 180);
 	if (key == 88)
 		mlx->fmap->ry += (10 * 3.14 / 180);
 	if (key == 86)
@@ -127,7 +131,7 @@ int		deal_key(int key, t_fmlx *mlx)
 		mlx->fmap->proj ^= FDF_ISO;
 	fdf_disp(mlx, mlx->fmap);
 	if (key == 53)
-		exit(0);
+		fdf_exit(mlx);
 	return (key);
 }
 
@@ -141,7 +145,7 @@ void	fdf(t_fmap *map)
 	ptr.fmap = map;
 	if(!(ptr.mlx = mlx_init()))
 		return ;
-	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "test mlx")))
+	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, map->name)))
 		return ;
 	if (!(ptr.img = mlx_new_image(ptr.mlx, SIMG_X, SIMG_Y)))
 		return ;

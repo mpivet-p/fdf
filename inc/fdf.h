@@ -51,5 +51,6 @@ void	rotate_y(t_point *point, int theta);
 void	rotate_z(t_point *point, int theta);
 t_point	fdf_coords(int x, int y, int z, t_fmap *map);
 void	fdf_reset(t_fmap *map);
+int		**delmap(int ***map, int y);
 
 #endif
