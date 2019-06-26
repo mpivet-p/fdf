@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 05:19:13 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/26 08:31:19 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/26 08:32:22 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,16 @@ int		parse_hmn_elem(char *line)
 	return (-1);
 }
 
-int		fdf_verify(char *path, t_fmap *map, char *line, int ret)
+int		fdf_verify(char *path, t_fmap *map, int ret)
 {
+	char	*line;
 	int		fd;
 	int		x;
 	int		y;
 
 	x = 0;
 	y = 0;
+	line = NULL;
 	if ((fd = open(path, O_RDONLY)) <= 0)
 		return (-1);
 	while ((ret = get_next_line(fd, &line)) > 0)

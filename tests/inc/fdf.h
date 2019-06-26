@@ -7,7 +7,6 @@
 # define FDF_ISO 1
 
 # include "libft.h"
-# include "mlx.h"
 # include <math.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -45,7 +44,7 @@ typedef struct	s_fmap
 }				t_fmap;
 
 int		fdf_parse(char *path, t_fmap *map);
-int		fdf_verify(char *path, t_fmap *map, char *line, int ret);
+int		fdf_verify(char *path, t_fmap *map, int ret);
 void	rotate_x(t_point *point, int theta);
 void	rotate_y(t_point *point, int theta);
 void	rotate_z(t_point *point, int theta);
