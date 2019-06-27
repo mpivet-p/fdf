@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 12:45:22 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/01/05 15:33:01 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/27 07:54:56 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # include "libft.h"
-# define BUFF_SIZE 700
+# define BUFF_SIZE 2000
 
 typedef struct	s_gnl
 {
