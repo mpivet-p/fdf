@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/27 08:05:22 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/27 08:51:56 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,12 @@ int		fill_map(char *path, t_fmap *map, char **tab, char *line)
 			return (-1);
 		}
 		while (tab[++x])
+		{
 			map->map[y][x] = ft_atoi(tab[x]);
-		free_tab(&tab);
+			ft_strdel(&(tab[x]));
+		}
+		if (tab)
+			free(tab);
 		x = -1;
 	}
 	close(fd);
