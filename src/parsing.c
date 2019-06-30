@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/27 08:51:56 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/30 22:16:46 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,8 @@ int		fdf_parse(char *path, t_fmap *map)
 {
 	char *name;
 
-	name = NULL;
-	if (!path || !(path[0]))
-		return (-1);
-	if (fdf_verify(path, map, NULL, 0) != 0)
+	name = path;
+	if ((!path || !(path[0])) || fdf_verify(path, map, NULL, 0) != 0)
 	{
 		ft_putstr_fd("fdf: invalid file.\n", 2);
 		return (-1);
@@ -103,7 +101,7 @@ int		fdf_parse(char *path, t_fmap *map)
 		delmap(&(map->map), map->size_y);
 		return (-1);
 	}
-	if (ft_strchr(path, '/'))
+	if (ft_strchr(path, '/') != NULL)
 		map->name = ft_strdup(ft_strchr(path, '/') + 1);
 	else
 		map->name = ft_strdup(name);

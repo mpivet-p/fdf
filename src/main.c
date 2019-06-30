@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/26 07:46:35 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/30 22:15:10 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int		deal_key(int key, t_fmlx *mlx)
 		mlx->fmap->ry -= (10 * 3.14 / 180);
 	if (key == 69)
 		mlx->fmap->scale += 2;
-	if (key == 78)
+	if (key == 78 && mlx->fmap->scale >= 2)
 		mlx->fmap->scale -= 2;
 	if (key == 116)
 		mlx->fmap->rz += (10 * 3.14 / 180);
