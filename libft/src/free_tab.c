@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/16 00:06:49 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/16 00:20:12 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:00:26 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,20 @@
 
 void	free_tab(char ***tab)
 {
+	char **ptr;
 	int	i;
 
 	i = 0;
 	if (tab && *tab)
 	{
-		while ((*tab)[i] != 0)
+		ptr = *tab;
+		while (ptr[i] != 0)
 		{
-			ft_strdel(tab[i]);
+			ft_strdel(&(ptr[i]));
+			i++;
 		}
 		free(*tab);
+		i++;
 		*tab = NULL;
 	}
 }
