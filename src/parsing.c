@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/01 20:30:07 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/02 03:15:59 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		fill_map(char *path, t_fmap *map, char **tab, char *line)
 	{
 		tab = ft_strsplit(line, ' ');
 		ft_strdel(&line);
-		if (!(tab))
+		if (!(tab) || parsing_tablen(tab) != map->size_x || y >= map->size_y)
 		{
 			close(fd);
 			return (-1);

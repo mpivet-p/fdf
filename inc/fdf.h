@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 01:32:48 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/02 01:33:30 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/02 03:10:53 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct	s_fmap
 	int		proj;
 }				t_fmap;
 
+int				parsing_tablen(char **tab);
 void			fdf_disp(t_fmlx *mlx, t_fmap *ptr);
 int				fdf_parse(char *path, t_fmap *map);
 int				fdf_verify(char *path, t_fmap *map, char *line, int ret);

@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 05:19:13 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/01 20:30:57 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/02 03:14:03 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ int		parse_hmn_elem(char *line)
 			return (i);
 	}
 	return (-1);
+}
+
+int		parsing_tablen(char **tab)
+{
+	int c;
+
+	c = 0;
+	while (tab && tab[c])
+		c++;
+	return (c);
 }
 
 int		fdf_verify(char *path, t_fmap *map, char *line, int ret)
