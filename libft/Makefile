@@ -1,6 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/07/02 22:00:41 by mpivet-p          #+#    #+#              #
+#    Updated: 2019/07/02 22:02:55 by mpivet-p         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME= libft.a
 CC= gcc
-PARAMS= -Wall -Wextra -Werror -g
+CFLAGS= -Wall -Wextra -Werror
 
 INC_PATH= inc/
 SRC_PATH= src/
@@ -44,7 +56,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	@$(CC) $(PARAMS) $(INC) -o $@ -c $<
+	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 clean:
 	@rm -rf $(OBJ_PATH)
