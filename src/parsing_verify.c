@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 05:19:13 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/27 08:52:13 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/01 20:30:57 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ int		parse_hmn_elem(char *line)
 				&& (ptr[i][1] >= '0' && ptr[i][1] <= '9'))
 					&& !(ptr[i][0] >= '0' && ptr[i][0] <= '9'))
 				ret = -1;
-			ft_strdel(&(ptr[i]));
 			i++;
 		}
-		if (ptr)
-			free(ptr);
+		free_tab(&ptr);
 		if (ret != -1)
 			return (i);
 	}

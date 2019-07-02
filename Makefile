@@ -6,20 +6,20 @@
 #    By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/22 02:45:47 by mpivet-p          #+#    #+#              #
-#    Updated: 2019/06/24 09:55:51 by mpivet-p         ###   ########.fr        #
+#    Updated: 2019/07/02 02:12:49 by mpivet-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= fdf
 CC= gcc
-CFLAGS= -Wall -Wextra -Werror -g
+CFLAGS= -Wall -Wextra -Werror
 
 INC_PATH= inc/
 SRC_PATH= src/
 OBJ_PATH= obj/
 
 INC_NAME= fdf.h
-SRC_NAME= main.c parsing.c parsing_verify.c tools.c
+SRC_NAME= main.c parsing.c parsing_verify.c tools.c display.c
 OBJ_NAME= $(SRC_NAME:.c=.o)
 
 INC= -I inc/ -I libft/inc/ -I /usr/local/include

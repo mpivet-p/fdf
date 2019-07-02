@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 02:45:38 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/30 22:16:46 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/01 20:30:07 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int		**delmap(int ***map, int y)
 
 int		**gen_map(int x, int y)
 {
-	int **map;
-	int i;
+	int		**map;
+	int		i;
 
 	i = 0;
 	map = NULL;
@@ -72,12 +72,8 @@ int		fill_map(char *path, t_fmap *map, char **tab, char *line)
 			return (-1);
 		}
 		while (tab[++x])
-		{
 			map->map[y][x] = ft_atoi(tab[x]);
-			ft_strdel(&(tab[x]));
-		}
-		if (tab)
-			free(tab);
+		free_tab(&tab);
 		x = -1;
 	}
 	close(fd);
@@ -86,7 +82,7 @@ int		fill_map(char *path, t_fmap *map, char **tab, char *line)
 
 int		fdf_parse(char *path, t_fmap *map)
 {
-	char *name;
+	char	*name;
 
 	name = path;
 	if ((!path || !(path[0])) || fdf_verify(path, map, NULL, 0) != 0)

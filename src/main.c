@@ -6,57 +6,11 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/06/30 22:15:10 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/02 01:57:16 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	fill_pxl(char *image, int x, int y, int color)
-{
-	int i;
-
-	i = (((SIMG_X * y) + x) * 4);
-	if (x > 0 && y > 0 && x < SIMG_X && y < SIMG_Y)
-	{
-		image[i + 2] = (color >> 16) & 0xFF;
-		image[i + 1] = (color >> 8) & 0xFF;
-		image[i + 0] = color & 0xFF;
-	}
-}
-
-void	fdf_draw_line(t_fmlx *ptr, t_point one, t_point two, int color)
-{
-	t_point	delta;
-	t_point	s;
-	double	slope;
-	double	pitch;
-
-	pitch = 0.0;
-	slope = 0.0;
-	delta.x = two.x - one.x;
-	s.x = (delta.x < 0) ? -1 : 1;
-	delta.y = two.y - one.y;
-	s.y = (delta.y < 0) ? -1 : 1;
-	if (fabs(delta.y) < fabs(delta.x))
-	{
-		slope = delta.y / delta.x;
-		pitch = one.y - (slope * one.x);
-		while ((int)round(one.x) != (int)round(two.x))
-		{
-			fill_pxl(ptr->screen, (int)round(one.x), (int)lround((slope * one.x) + pitch), color);
-			one.x += s.x;
-		}
-		return ;
-	}
-	slope = delta.x / delta.y;
-	pitch = one.x - (slope * one.y);
-	while ((int)round(one.y) != (int)round(two.y))
-	{
-		fill_pxl(ptr->screen, (int)lround((slope * one.y) + pitch), (int)round(one.y), color);
-		one.y += s.y;
-	}
-}
 
 void	fdf_exit(t_fmlx *mlx)
 {
@@ -67,68 +21,46 @@ void	fdf_exit(t_fmlx *mlx)
 	exit(0);
 }
 
-void	fdf_disp(t_fmlx *mlx, t_fmap *ptr)
+void	key_parttwo(int key, t_fmlx *mlx)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	ft_bzero(mlx->screen, (SIMG_X * SIMG_Y * 4));
-	while (i < ptr->size_y)
-	{
-		while (j < ptr->size_x)
-		{
-			if (i + 1 < ptr->size_y)
-				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j, i + 1, ptr->map[i + 1][j], ptr), 0xFFFFFF);
-			if (i + 1 < ptr->size_y && ptr->map[i][j] > 0 && ptr->map[i + 1][j] > 0)
-				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j, i + 1, ptr->map[i + 1][j], ptr), 0x4073ed);
-			if (j + 1 < ptr->size_x)
-				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j + 1, i, ptr->map[i][j + 1], ptr), 0xFFFFFF);
-			if (j + 1 < ptr->size_x && ptr->map[i][j] > 0 && ptr->map[i][j + 1] > 0)
-				fdf_draw_line(mlx, fdf_coords(j, i, ptr->map[i][j], ptr), fdf_coords(j + 1, i, ptr->map[i][j + 1], ptr), 0x4073ed);
-			j++;
-		}
-		j = 0;
-		i++;
-	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+	if (key == 78 && mlx->fmap->scale >= 2)
+		mlx->fmap->scale -= 2;
+	else if (key == 116)
+		mlx->fmap->rz += (10 * 3.14 / 180);
+	else if (key == 121)
+		mlx->fmap->rz -= (10 * 3.14 / 180);
+	else if (key == 75)
+		mlx->fmap->zmod -= 0.1;
+	else if (key == 67)
+		mlx->fmap->zmod += 0.1;
+	else if (key == 49)
+		fdf_reset(mlx->fmap);
+	else if (key == 48)
+		mlx->fmap->proj ^= FDF_ISO;
 }
 
 int		deal_key(int key, t_fmlx *mlx)
 {
 	if (key == 124)
 		mlx->fmap->x_shift += 42;
-	if (key == 123)
+	else if (key == 123)
 		mlx->fmap->x_shift -= 42;
-	if (key == 126)
+	else if (key == 126)
 		mlx->fmap->y_shift -= 42;
-	if (key == 125)
+	else if (key == 125)
 		mlx->fmap->y_shift += 42;
-	if (key == 91)
+	else if (key == 91)
 		mlx->fmap->rx -= (10 * 3.14 / 180);
-	if (key == 84)
+	else if (key == 84)
 		mlx->fmap->rx += (10 * 3.14 / 180);
-	if (key == 88)
+	else if (key == 88)
 		mlx->fmap->ry += (10 * 3.14 / 180);
-	if (key == 86)
+	else if (key == 86)
 		mlx->fmap->ry -= (10 * 3.14 / 180);
-	if (key == 69)
+	else if (key == 69)
 		mlx->fmap->scale += 2;
-	if (key == 78 && mlx->fmap->scale >= 2)
-		mlx->fmap->scale -= 2;
-	if (key == 116)
-		mlx->fmap->rz += (10 * 3.14 / 180);
-	if (key == 121)
-		mlx->fmap->rz -= (10 * 3.14 / 180);
-	if (key == 75)
-		mlx->fmap->zmod -= 0.1;
-	if (key == 67)
-		mlx->fmap->zmod += 0.1;
-	if (key == 49)
-		fdf_reset(mlx->fmap);
-	if (key == 48)
-		mlx->fmap->proj ^= FDF_ISO;
+	else
+		key_parttwo(key, mlx);
 	fdf_disp(mlx, mlx->fmap);
 	if (key == 53)
 		fdf_exit(mlx);
@@ -138,19 +70,19 @@ int		deal_key(int key, t_fmlx *mlx)
 void	fdf(t_fmap *map)
 {
 	t_fmlx	ptr;
-	int bpp;
-	int size_line;
-	int endian;
+	int		bpp;
+	int		size_line;
+	int		endian;
 
 	ptr.fmap = map;
-	if(!(ptr.mlx = mlx_init()))
-		return ;
+	if (!(ptr.mlx = mlx_init()))
+		fdf_exit(&ptr);
 	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, map->name)))
-		return ;
+		fdf_exit(&ptr);
 	if (!(ptr.img = mlx_new_image(ptr.mlx, SIMG_X, SIMG_Y)))
-		return ;
+		fdf_exit(&ptr);
 	if (!(ptr.screen = mlx_get_data_addr(ptr.img, &bpp, &size_line, &endian)))
-		return ;
+		fdf_exit(&ptr);
 	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
 	fdf_disp(&ptr, map);
 	mlx_loop(ptr.mlx);
@@ -164,7 +96,7 @@ int		main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_putstr_fd("usage : fdf file\n", 2);
-			return (1);
+		return (1);
 	}
 	if (fdf_parse(argv[1], &map) != 0)
 		return (2);
