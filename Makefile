@@ -6,7 +6,7 @@
 #    By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/22 02:45:47 by mpivet-p          #+#    #+#              #
-#    Updated: 2019/07/02 02:47:35 by mpivet-p         ###   ########.fr        #
+#    Updated: 2019/07/10 04:08:47 by mpivet-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,19 @@ DEF= \033[0m
 RED= \033[31;1m
 GRN= \033[32;1m
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re local
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft
 	@gcc $(CFLAGS) -o $(NAME) $(OBJ) $(INC) $(LIBS) $(MLX)
+	@echo "$(RED)[fdf] : $(DEF)Compilation                   $(GRN)[OK]$(DEF)"
+
+local: $(OBJ)
+	@make -C libft
+	make -C mlx
+	@gcc $(CFLAGS) -o $(NAME) $(OBJ) -I inc/ -I libft/inc/ -I mlx/ -L libft/ -lft -L mlx/ -lmlx -lm $(MLX)
 	@echo "$(RED)[fdf] : $(DEF)Compilation                   $(GRN)[OK]$(DEF)"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c

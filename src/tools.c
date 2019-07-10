@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 01:30:54 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/02 01:31:24 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/10 04:04:39 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_point	fdf_coords(int x, int y, int z, t_fmap *map)
 	z = z * map->scale * map->zmod;
 	if (map->proj & FDF_ISO)
 	{
-		point.x = ((x - y) * cos(map->rx));
-		point.y = (-z + (x + y) * sin(map->ry));
+		point.x = ((x - y) * cos(0.523599));
+		point.y = (-z + (x + y) * sin(0.523599));
 	}
 	else
 	{
